@@ -21,4 +21,4 @@ jobs:
 
       - name: upload pdfs to s3
         run: |
-          aws s3 cp pdfs/ s3://my-pdf-bucket --recursive
+          aws s3 cp pdfs/ s3://pdf-bucket-update --recursive
