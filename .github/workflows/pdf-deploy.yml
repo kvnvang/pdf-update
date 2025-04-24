@@ -23,8 +23,9 @@ jobs:
         run: |
           aws s3 cp pdfs/ s3://pdf-bucket-update --recursive
 
+      # Power Automate Approval 
       - name: Power Automate Approval
         run: |
-    curl -X POST "https://prod-88.westus.logic.azure.com:443/workflows/9b71ed7fb6b84e31a1f11d7f7742ef2d/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=LB3_ndvj_zsp_4sP8wd8Oy-bEg-6imaBgWkx9JJEY0jE" /
-    -H "Content-Type: application/json" \
-    -d '{"filename":"${{ github.event.head_commit.message}}","uploader":"kvnvang","timestamp":"${{ github.event.head_commit.timestamp}}"}'
+          curl -X POST "https://prod-88.westus.logic.azure.com:443/workflows/9b71ed7fb6b84e31a1f11d7f7742ef2d/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=LB3_ndvj_zsp_4sP8wd8Oy-bEg-6imaBgWkx9JJEY0jE" \
+          -H "Content-Type: application/json" \
+          -d '{"filename":"${{ github.event.head_commit.message}}","uploader":"kvnvang","timestamp":"${{ github.event.head_commit.timestamp}}"}'
