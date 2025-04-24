@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'pdfs/**'
+      - '.github/workflows/pdf-deploy.yml'
+      - 'README.md'
 
 jobs:
   deploy-pdf:
