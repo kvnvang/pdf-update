@@ -6,6 +6,9 @@ on:
       - 'pdfs/**'
       - '.github/workflows/pdf-deploy.yml'
       - 'README.md'
+# Allows Power Automate to call back GitHub and continue only if approved
+repository_dispatch:
+  types: [pdf_approval]
 
 jobs:
   deploy-pdf:
@@ -31,3 +34,13 @@ jobs:
           curl -X POST "https://prod-88.westus.logic.azure.com:443/workflows/9b71ed7fb6b84e31a1f11d7f7742ef2d/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=LB3_ndvj_zsp_4sP8wd8Oy-bEg-6imaBgWkx9JJEY0jE" \
           -H "Content-Type: application/json" \
           -d "{\"filename\": \"${{ github.event.head_commit.message }}\", \"uploader\": \"kvnvang\", \"timestamp\": \"${{ github.event.head_commit.timestamp }}\"}"
+
+# Run If Approved
+run-if-approved:
+  runs-on: ubuntu-latest
+  needs: deploy-pdf
+  if: github.event.action == 'pdf_approval'  && github.event.client_payload.status == 'approved'
+  steps:
+    - name: continue after approval
+      run: echo "pdf was approved in Power Automate - continuing pipeline..."
+      # ^ prints message to the logs, can replace later with real deployment
